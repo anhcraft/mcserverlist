@@ -1,18 +1,18 @@
 <template>
   <div id="app">
     <div class="columns">
-      <div class="column is-one-quarter container has-background-white-ter" id="menu">
+      <div class="column is-one-quarter-desktop is-two-fifths-tablet is-full-mobile container has-background-white-ter" id="menu">
         <figure class="image is-fullwidth">
           <img src="https://i.imgur.com/9nZfJ0c.png" alt="Banner 1"/>
         </figure>
-        <h1 class="is-size-3 has-text-info has-text-centered mt-10 has-text-weight-light">Minecraft VN</h1>
+        <h1 class="is-size-3 has-text-info has-text-centered mt-10 m-mt-10 m-tt-10 has-text-weight-light">Minecraft VN</h1>
         <a href="https://github.com/anhcraft/mcserverlist">
-          <b-taglist class="has-text-centered is-unselectable mt-15" style="display:block" attached>
+          <b-taglist class="has-text-centered mt-15 m-tt-15 m-mt-15" style="display:block" attached>
             <b-tag type="is-dark">Phiên bản</b-tag>
             <b-tag type="is-info">BETA 3</b-tag>
           </b-taglist>
         </a>
-        <b-menu class="pl-10 mt-40 pb-30">
+        <b-menu class="menu pl-10 p-ml-20 p-tl-50 mt-40 m-tt-20 m-mt-10 pb-30">
           <b-menu-list label="MENU">
             <b-menu-item icon="home" label="Danh sách máy chủ" tag="router-link" to="/"></b-menu-item>
             <b-menu-item icon="chart-bar" label="Bảng xếp hạng" tag="router-link" to="/ranking/" disabled></b-menu-item>
@@ -31,7 +31,7 @@
           </template>
         </b-menu>
       </div>
-      <div class="column container pt-25 pr-25 pb-50 p-mb-50 p-tb-50">
+      <div class="column container is-full-mobile pt-25 pr-25 p-tt-25 p-tr-10 p-mt-10 p-mr-10 pb-50 p-mb-50 p-tb-50">
         <router-view/>
         <br/>
         <br/>
@@ -151,7 +151,7 @@
   @import "~bulma";
   @import "~buefy/src/scss/buefy";
 
-  $sizes: (0,10,15,20,25,30,35,40,45,50,60,70,80,90,100);
+  $sizes: (5,10,15,20,25,30,35,40,45,50,60,70,80,90,100);
   $positions: ('top','left','bottom','right');
 
   // mobile

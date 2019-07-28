@@ -3,7 +3,9 @@
         <header class="modal-card-head has-background-grey-dark">
             <p class="modal-card-title has-text-light">{{ serverViewData.server.name }}</p>
         </header>
-        <section class="modal-card-body" v-html="serverViewData.intro"></section>
+        <section class="modal-card-body">
+            <iframe :srcdoc="serverViewData.intro" style="width: 100%; height: 100%;" sandbox></iframe>
+        </section>
         <footer class="modal-card-foot" style="display:block">
             <div class="columns">
                 <div class="column is-3">

@@ -24,31 +24,27 @@ Vue.mixin({
     }
   },
   methods: {
+    ifDefined(x, defaultVal){
+      return x === undefined ? defaultVal : x;
+    },
+    showFailedMsg(failedMsg){
+      this.$notification.open({
+        message: failedMsg,
+        position: 'is-top-right',
+        type: 'is-danger',
+        hasIcon: true,
+        queue: false
+      });
+    },
     checkLength(str, min, max, failedMsg){
       const x = str.trim();
       const s = x.length >= min && x.length <= max;
-      if(!s && failedMsg !== undefined) {
-        this.$notification.open({
-          message: failedMsg,
-          position: 'is-top-right',
-          type: 'is-danger',
-          hasIcon: true,
-          queue: false
-        });
-      }
+      if(!s && failedMsg !== undefined) this.showFailedMsg(failedMsg);
       return s;
     },
     checkRegex(str, regex, failedMsg){
       const s = new RegExp(regex).test(str.trim());
-      if(!s && failedMsg !== undefined) {
-        this.$notification.open({
-          message: failedMsg,
-          position: 'is-top-right',
-          type: 'is-danger',
-          hasIcon: true,
-          queue: false
-        });
-      }
+      if(!s && failedMsg !== undefined) this.showFailedMsg(failedMsg);
       return s;
     },
     randomColors() {
