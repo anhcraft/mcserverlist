@@ -1,37 +1,56 @@
 <template>
   <div id="app">
-    <div class="columns">
-      <div class="column is-one-quarter-desktop is-two-fifths-tablet is-full-mobile container has-background-white-ter" id="menu">
-        <figure class="image is-fullwidth">
-          <img src="https://i.imgur.com/9nZfJ0c.png" alt="Banner 1"/>
-        </figure>
-        <h1 class="is-size-3 has-text-info has-text-centered mt-10 m-mt-10 m-tt-10 has-text-weight-light">Minecraft VN</h1>
-        <a href="https://github.com/anhcraft/mcserverlist">
-          <b-taglist class="has-text-centered mt-15 m-tt-15 m-mt-15" style="display:block" attached>
-            <b-tag type="is-dark">Phiên bản</b-tag>
-            <b-tag type="is-info">BETA 5</b-tag>
-          </b-taglist>
+    <nav class="navbar is-fixed-top is-dark is-size-7 is-uppercase" role="navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="https://minecraftvn.net/styles/io/io/images/logo.png" alt="Favicon" style="max-height:33px">
         </a>
-        <b-menu class="menu pl-10 p-ml-20 p-tl-50 mt-40 m-tt-20 m-mt-10 pb-30">
-          <b-menu-list label="MENU">
-            <b-menu-item icon="home" label="Danh sách máy chủ" tag="router-link" to="/"></b-menu-item>
-            <b-menu-item icon="chart-bar" label="Bảng xếp hạng" tag="router-link" to="/ranking/" disabled></b-menu-item>
-            <b-menu-item icon="forum" label="Diễn đàn" href="https://minecraftvn.net/"></b-menu-item>
-          </b-menu-list>
-          <template v-if="logged_in">
-            <b-menu-list label="TÀI KHOẢN">
-              <b-menu-item icon="monitor-dashboard" label="Bảng điều khiển" tag="router-link" to="/dashboard/"></b-menu-item>
-              <b-menu-item icon="logout" label="Đăng xuất" tag="router-link" to="/logout/"></b-menu-item>
-            </b-menu-list>
-          </template>
-          <template v-else>
-            <b-menu-list label="TÀI KHOẢN">
-              <b-menu-item icon="account" label="Đăng nhập" tag="router-link" to="/login/"></b-menu-item>
-            </b-menu-list>
-          </template>
-        </b-menu>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" v-bind:class="{'is-active': showBurgerNavbar}" v-on:click="showBurgerNavbar = !showBurgerNavbar">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <div class="column container is-full-mobile pt-25 pr-25 p-tt-25 p-tr-10 p-mt-10 p-mr-10 pb-50 p-mb-50 p-tb-50">
+      <div class="navbar-menu" v-bind:class="{'is-active': !showBurgerNavbar}">
+        <div class="navbar-start">
+          <a class="navbar-item" href="https://minecraftvn.net/">
+            <b-icon icon="home"></b-icon>&nbsp;&nbsp;&nbsp;Diễn đàn
+          </a>
+          <router-link tag="a" to="/" class="navbar-item">
+            <b-icon icon="table"></b-icon>&nbsp;&nbsp;&nbsp;Danh sách máy chủ
+          </router-link>
+          <!--
+          <router-link tag="a" to="/ranking/" class="navbar-item">
+            <b-icon icon="chart-bar"></b-icon>&nbsp;&nbsp;&nbsp;Bảng xếp hạng
+          </router-link>
+          -->
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"><b-icon icon="account"></b-icon>&nbsp;&nbsp;&nbsp;Tài khoản</a>
+            <div class="navbar-dropdown">
+              <router-link tag="a" to="/dashboard/" class="navbar-item" v-if="logged_in">
+                <b-icon icon="monitor-dashboard"></b-icon>&nbsp;&nbsp;&nbsp;Bảng điều khiển
+              </router-link>
+              <router-link tag="a" to="/logout/" class="navbar-item" v-if="logged_in">
+                <b-icon icon="logout"></b-icon>&nbsp;&nbsp;&nbsp;Đăng xuất
+              </router-link>
+              <router-link tag="a" to="/login/" class="navbar-item" v-else>
+                <b-icon icon="login"></b-icon>&nbsp;&nbsp;&nbsp;Đăng nhập
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="navbar-end pr-15 p-tr-15 p-mr-15">
+          <a href="https://github.com/anhcraft/mcserverlist">
+            <b-taglist class="has-text-centered mt-15 m-tt-15 m-mt-15" style="display:block" attached>
+              <b-tag type="is-white">Phiên bản</b-tag>
+              <b-tag type="is-info">BETA 6</b-tag>
+            </b-taglist>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div class="columns">
+      <div class="column container is-full-mobile pt-70 pr-50 p-tt-70 p-tr-10 p-mt-70 p-mr-10 pb-50 p-mb-50 p-tb-50">
         <router-view/>
         <br/>
         <br/>
@@ -50,6 +69,11 @@
   Vue.use(Buefy);
 
   export default {
+    data() {
+      return {
+        showBurgerNavbar: false
+      }
+    },
     methods: {
       doAuth(r){
         Vue.nextTick().then(() => {

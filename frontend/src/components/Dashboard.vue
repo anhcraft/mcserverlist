@@ -26,6 +26,10 @@
                                     {{ require('moment')(props.row.createdDate).locale("vi-vn").fromNow() }}
                                 </b-table-column>
 
+                                <b-table-column field="creator" label="Người tạo" sortable numeric centered>
+                                    <a :href="`https://minecraftvn.net/members/${props.row.creator}/`" target="_blank">{{ props.row.creator }}</a>
+                                </b-table-column>
+
                                 <b-table-column field="modify" label="Tùy chỉnh" centered>
                                     <div class="buttons">
                                         <b-button tag="router-link" size="is-small"
@@ -92,7 +96,7 @@
                     }
                     this.isLoading = false;
                 }, {
-                    params: "id,name,ip,port,createdDate",
+                    params: "id,name,ip,port,createdDate,creator",
                     from: this.from_index
                 });
             },
@@ -110,6 +114,8 @@
                             container: null
                         });
                         this.requestStrictApi("/server/remove/"+id, (res) => {
+                            loading.close();
+                            this.lock = false;
                             if(res.status === 200 && res.data.code > 0){
                                 if(res.data.code === 2) {
                                     this.$notification.open({
@@ -119,9 +125,9 @@
                                         position: 'is-bottom-right',
                                         hasIcon: true
                                     });
-                                    setTimeout(() => {
-                                        location.reload();
-                                    }, 800);
+                                    this.servers = this.servers.filter(x => {
+                                        return x.id !== id
+                                    });
                                 } else {
                                     this.$notification.open({
                                         position: 'is-bottom-right',
@@ -130,8 +136,6 @@
                                         message: res.data.msg,
                                         hasIcon: true
                                     });
-                                    loading.close();
-                                    this.lock = false;
                                 }
                             } else {
                                 this.$notification.open({
@@ -141,8 +145,6 @@
                                     message: 'Lỗi API! Vui lòng liên hệ admin.',
                                     hasIcon: true
                                 });
-                                loading.close();
-                                this.lock = false;
                             }
                         });
                     }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Home from './components/Home.vue'
 import VueHead from "vue-head";
 
 Vue.use(VueHead);
@@ -18,27 +18,27 @@ export default new Router({
     {
       path: '/login/',
       name: 'login',
-      component: () => import('./views/Login.vue')
+      component: () => import('./components/Login.vue')
     },
     {
       path: '/logout/',
       name: 'logout',
-      component: () => import('./views/Logout.vue')
+      component: () => import('./components/Logout.vue')
     },
     {
       path: '/dashboard/',
       name: 'dashboard',
-      component: () => import('./views/Dashboard.vue')
+      component: () => import('./components/Dashboard.vue')
     },
     {
       path: '/dashboard/new/',
       name: 'newserver',
-      component: () => import('./views/NewServer.vue')
+      component: () => import('./components/NewServer.vue')
     },
     {
       path: '/dashboard/edit/:sid',
       name: 'editserver',
-      component: () => import('./views/EditServer.vue')
+      component: () => import('./components/EditServer.vue')
     }
   ]
 })

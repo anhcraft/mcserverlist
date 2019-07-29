@@ -4,7 +4,7 @@
             <div class="hero-body">
                 <div class="container">
                     <header class="is-size-3 has-text-weight-medium has-text-grey">
-                        <b-icon icon="server is-large"></b-icon> Tùy chỉnh máy chủ
+                        <b-icon icon="server is-large"></b-icon> Máy chủ mới
                     </header>
                     <section class="mt-15">
                         <b-field label="Tên máy chủ">
@@ -53,7 +53,7 @@
                         </p>
 
                         <b-field label="Giới thiệu về máy chủ">
-                            <b-input v-model="serverIntro" type="textarea" rows="10" required></b-input>
+                            <b-input v-model="serverIntro" type="textarea" rows="15" required></b-input>
                         </b-field>
                         <p class="is-size-7">
                             Bạn có thể dùng Markdown để định dạng cho bài viết!<br>
@@ -72,7 +72,7 @@
                             <b-input v-model="serverWebsite"></b-input>
                         </b-field>
 
-                        <b-button class="mt-10 m-tt-10 m-mt-10" type="is-info" outlined icon-left="check" @click="edit">Xác nhận</b-button>
+                        <b-button class="mt-10 m-tt-10 m-mt-10" type="is-info" outlined icon-left="check" @click="create">Xác nhận</b-button>
                     </section>
                 </div>
             </div>
@@ -84,13 +84,12 @@
     const servertags = require('../assets/servertags.json');
 
     export default {
-        name: "editserver",
+        name: "newserver",
         data() {
             return {
                 useDifferentPingAddress: false,
-                serverId: '',
-                serverIp: '',
                 serverName: '',
+                serverIp: '',
                 serverPort: 25565,
                 serverPingIp: '',
                 serverPingPort: 25565,
@@ -102,59 +101,25 @@
                 errorMsg: true,
                 lock: false,
                 on_route_update: [
-                    () => this.loadServer()
+                    () => this.auth()
                 ]
             }
         },
         methods: {
-            loadServer(){
-                this.restrictAccess(() => {
-                    const loading = this.$loading.open({
-                        container: null
-                    });
-                    this.lock = true;
-                    this.requestStrictApi(`/server/get/${this.$route.params.sid}`, (res) => {
-                        if(res.data.code === 2){
-                            const s = res.data.server;
-                            this.serverId = s.id;
-                            this.serverIp = s.ip;
-                            this.serverName = s.name;
-                            this.serverPort = s.port;
-                            this.serverIntro = s.intro;
-                            this.serverWebsite = s.website;
-                            this.serverTags = s.tags.split(",");
-                            if(this.serverTags.length === 1 && this.serverTags[0].length === 0){
-                                this.serverTags = [];
-                            }
-                            this.useDifferentPingAddress = this.ifDefined(s.diffPing, "");
-                            this.serverPingIp = this.ifDefined(s.pingIp, "");
-                            this.serverPingPort = this.ifDefined(s.pingPort, 25565);
-                        } else {
-                            this.$notification.open({
-                                duration: 3000,
-                                message: res.data.code === 1 ? 'Bạn không sở hữu máy chủ này!.' : 'Lỗi API! Vui lòng liên hệ admin.',
-                                position: 'is-bottom-right',
-                                type: 'is-danger',
-                                hasIcon: true
-                            });
-                            this.$router.back();
-                        }
-                        loading.close();
-                        this.lock = false;
-                    });
-                })
+            auth(){
+                this.restrictAccess();
             },
             suggestTags(text){
                 this.filteredTags = servertags.tags.filter((t) => {
                     return t.toLowerCase().indexOf(text.toLowerCase()) >= 0
                 });
             },
-            edit(){
+            create(){
                 // validate
                 if(!this.checkLength(this.serverName, 3, 25, 'Tên máy chủ phải từ 3 đến 25 kí tự')) return;
                 if(!this.checkLength(this.serverIp, 6, 15, 'Ip/Host máy chủ phải từ 6 đến 15 kí tự')) return;
                 if(!this.checkRegex(this.serverIp, '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)+([A-Za-z]|[A-Za-z][A-Za-z0-9\\-]*[A-Za-z0-9])$', 'Ip/Host không hợp lệ!')) return;
-                if(!this.checkLength(this.serverIntro, 30, 1000, 'Nội dung giới thiệu máy chủ phải từ 30 đến 1000 kí tự')) return;
+                if(!this.checkLength(this.serverIntro, 30, 10000, 'Nội dung giới thiệu máy chủ phải từ 30 đến 10000 kí tự')) return;
                 if(this.serverWebsite.length > 0 && !this.checkRegex(this.serverWebsite, '^(http|https):\\/\\/(([a-zA-Z0-9$\\-_.+!*\'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\\-\u00C0-\u017F]+\\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\\/(([a-zA-Z0-9$\\-_.+!*\'(),;:@&=]|%[0-9a-fA-F]{2})*(\\/([a-zA-Z0-9$\\-_.+!*\'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\\?([a-zA-Z0-9$\\-_.+!*\'(),;:@&=\\/?]|%[0-9a-fA-F]{2})*)?(\\#([a-zA-Z0-9$\\-_.+!*\'(),;:@&=\\/?]|%[0-9a-fA-F]{2})*)?)?$', 'Địa chỉ trang web không hợp lệ!')) return;
                 if(this.useDifferentPingAddress){
                     if(!this.checkRegex(this.serverPingIp, '^(([A-Za-z]|[^0-9][A-Za-z0-9\\-]\\.)+([A-Za-z]|[^0-9][A-Za-z0-9\\-])+)$', 'Host truy vấn không hợp lệ!')) return;
@@ -171,7 +136,7 @@
                 const loading = this.$loading.open({
                     container: null
                 });
-                this.requestStrictApi("/server/edit", (res) => {
+                this.requestStrictApi("/server/create", (res) => {
                     if(res.status === 200){
                         this.hasError = res.data.code !== 2;
                         if(this.hasError){
@@ -187,7 +152,7 @@
                         } else {
                             this.$notification.open({
                                 duration: 3000,
-                                message: "Chỉnh sửa máy chủ thành công",
+                                message: "Thêm máy chủ thành công",
                                 position: 'is-bottom-right',
                                 type: 'is-success',
                                 hasIcon: true
@@ -210,7 +175,6 @@
                         this.lock = false;
                     }
                 }, {
-                    sid: this.serverId,
                     ip: this.serverIp,
                     name: this.serverName,
                     port: this.serverPort,
@@ -227,7 +191,7 @@
             title: function () {
                 return {
                     inner: "MCVNServerList",
-                    complement: "Tùy chỉnh máy chủ"
+                    complement: "Thêm máy chủ"
                 }
             },
             link: [

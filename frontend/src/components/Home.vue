@@ -17,18 +17,18 @@
                 <b-icon icon="table is-large"></b-icon> DANH SÁCH MÁY CHỦ
             </header>
 
-            <b-table :data="servers" :loading="isLoading" default-sort-direction="desc" default-sort="createdDate" class="mt-45">
+            <b-table :data="servers" :loading="isLoading" default-sort-direction="desc" default-sort="ping.result.players.online" class="mt-45">
                 <template slot-scope="props">
                     <b-table-column field="name" label="Máy chủ" sortable>
-                        <div class="columns is-centered" style="cursor:pointer">
+                        <div class="columns is-centered">
                             <div class="column is-3">
                                 <b-tooltip label="Nhấn vào để xem thêm về máy chủ này" size="is-small" multilined type="is-dark" position="is-left">
-                                    <img v-on:click="view(props.row)" :src="props.row.ping.result.favicon" alt="Biểu tượng" style="max-width:64px"/>
+                                    <img v-on:click="view(props.row)" :src="props.row.ping.result.favicon" alt="Biểu tượng" style="max-width:64px;cursor:pointer"/>
                                 </b-tooltip>
                             </div>
                             <div class="column">
                                 <b-tooltip label="Nhấn vào để xem thêm về máy chủ này" size="is-small" multilined type="is-dark" position="is-left">
-                                    <span v-on:click="view(props.row)">
+                                    <span v-on:click="view(props.row)" style="cursor:pointer">
                                         <span v-if="props.row.ping.success" class="has-text-success">
                                             <b-icon icon="check-decagram" size="is-small"></b-icon>
                                         </span>
@@ -40,7 +40,7 @@
                                 </b-tooltip>
                                 <br/>
                                 <div class="columns is-centered mt-10 m-tt-10 m-mt-10" style="margin-bottom: 0">
-                                    <div class="column">
+                                    <div class="column" style="cursor:pointer">
                                         <b-taglist attached>
                                             <b-tooltip label="Nhấn vào để sao chép" size="is-small" multilined type="is-dark" position="is-top">
                                                 <span v-on:click="copy(props.row.ip + ':' + props.row.port)">
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import ViewServer from "../components/ViewServer";
+import ViewServer from "./ViewServer";
 
 export default {
     name: 'home',
@@ -185,10 +185,11 @@ export default {
                         s.push(q.id);
                     }
                     this.$toast.open({
-                        message: 'Đang kiểm tra tình trạng máy chủ...',
+                        message: 'Đang ping...',
                         type: 'is-info',
                         hasIcon: true,
-                        queue: false
+                        queue: false,
+                        position: 'is-bottom-right'
                     });
                     this.available = res.data.code === 2;
                     this.axios.get(`${this.config.server_api_url}/server/ping?servers=`+s.join(",")).then((res) => {
@@ -203,10 +204,11 @@ export default {
                             }));
                         }
                         this.$toast.open({
-                            message: "Đã cập nhật tình trạng máy chủ!",
+                            message: "Xong xD",
                             type: 'is-success',
                             hasIcon: true,
-                            queue: false
+                            queue: false,
+                            position: 'is-bottom-right'
                         });
 
                         this.from_index += offset;
