@@ -9,7 +9,7 @@
         <a href="https://github.com/anhcraft/mcserverlist">
           <b-taglist class="has-text-centered mt-15 m-tt-15 m-mt-15" style="display:block" attached>
             <b-tag type="is-dark">Phiên bản</b-tag>
-            <b-tag type="is-info">BETA 4</b-tag>
+            <b-tag type="is-info">BETA 5</b-tag>
           </b-taglist>
         </a>
         <b-menu class="menu pl-10 p-ml-20 p-tl-50 mt-40 m-tt-20 m-mt-10 pb-30">

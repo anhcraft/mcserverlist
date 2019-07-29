@@ -27,7 +27,7 @@
                 <div class="column">
                     <div class="columns">
                         <div class="column is-3">
-                            <img :src="serverViewData.server.query.favicon" alt="Biểu tượng" style="max-width:64px"/>
+                            <img :src="serverViewData.server.ping.result.favicon" alt="Biểu tượng" style="max-width:64px"/>
                         </div>
                         <div class="column">
                             Đã tạo {{ require('moment')(serverViewData.server.createdDate).locale("vi-vn").fromNow() }}

@@ -29,25 +29,25 @@
 
                         <b-field>
                             <b-tooltip label="Sử dụng một IP khác dành riêng cho việc truy vấn dữ liệu trực tiếp (Ví dụ: lượng người chơi, biểu tượng máy chủ,...). IP này sẽ không bao giờ được gửi cho người chơi!" size="is-small" multilined type="is-dark" position="is-right">
-                                <b-switch size="is-small" v-model="useDifferentQueryAddress" type="is-success">
+                                <b-switch size="is-small" v-model="useDifferentPingAddress" type="is-success">
                                     Sử dụng địa chỉ khác để truy vấn
                                 </b-switch>
                             </b-tooltip>
                         </b-field>
 
-                        <b-field v-if="useDifferentQueryAddress" grouped>
+                        <b-field v-if="useDifferentPingAddress" grouped>
                             <b-field label="Host truy vấn" expanded>
-                                <b-input v-model="serverQueryIp"
+                                <b-input v-model="serverPingIp"
                                          validation-message="Vui lòng nhập đúng định dạng tên miền!"
                                          pattern="^(([A-Za-z]|[^0-9][A-Za-z0-9\-]\.)+([A-Za-z]|[^0-9][A-Za-z0-9\-])+)$" placeholder="mc.hypixel.net" required></b-input>
                             </b-field>
 
-                            <b-field label="Port" v-if="useDifferentQueryAddress">
-                                <b-numberinput min="1" max="65535" v-model="serverQueryPort"></b-numberinput>
+                            <b-field label="Port" v-if="useDifferentPingAddress">
+                                <b-numberinput min="1" max="65535" v-model="serverPingPort"></b-numberinput>
                             </b-field>
                         </b-field>
 
-                        <p class="is-size-7" v-if="useDifferentQueryAddress">
+                        <p class="is-size-7" v-if="useDifferentPingAddress">
                             <b>Chú ý:</b> Vì lí do tránh fake truy vấn, bạn chỉ có thể dùng host (ví dụ <i>mc.minecraft.net</i> hay <i>hypixel.vn</i>). Ngoài ra, host truy vấn và host máy chủ phải cùng tên miền (ví dụ như <i>mc.abc.xyz</i> và <i>abc.xyz</i>)
                             <br/><br/><br/>
                         </p>
@@ -87,13 +87,13 @@
         name: "editserver",
         data() {
             return {
-                useDifferentQueryAddress: false,
+                useDifferentPingAddress: false,
                 serverId: '',
                 serverIp: '',
                 serverName: '',
                 serverPort: 25565,
-                serverQueryIp: '',
-                serverQueryPort: 25565,
+                serverPingIp: '',
+                serverPingPort: 25565,
                 serverIntro: '',
                 serverWebsite: '',
                 serverTags: [],
@@ -126,9 +126,9 @@
                             if(this.serverTags.length === 1 && this.serverTags[0].length === 0){
                                 this.serverTags = [];
                             }
-                            this.useDifferentQueryAddress = this.ifDefined(s.diffQuery, "");
-                            this.serverQueryIp = this.ifDefined(s.queryIp, "");
-                            this.serverQueryPort = this.ifDefined(s.queryPort, 25565);
+                            this.useDifferentPingAddress = this.ifDefined(s.diffPing, "");
+                            this.serverPingIp = this.ifDefined(s.pingIp, "");
+                            this.serverPingPort = this.ifDefined(s.pingPort, 25565);
                         } else {
                             this.$notification.open({
                                 duration: 3000,
@@ -156,10 +156,10 @@
                 if(!this.checkRegex(this.serverIp, '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)+([A-Za-z]|[A-Za-z][A-Za-z0-9\\-]*[A-Za-z0-9])$', 'Ip/Host không hợp lệ!')) return;
                 if(!this.checkLength(this.serverIntro, 30, 1000, 'Nội dung giới thiệu máy chủ phải từ 30 đến 1000 kí tự')) return;
                 if(this.serverWebsite.length > 0 && !this.checkRegex(this.serverWebsite, '^(http|https):\\/\\/(([a-zA-Z0-9$\\-_.+!*\'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\\-\u00C0-\u017F]+\\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\\/(([a-zA-Z0-9$\\-_.+!*\'(),;:@&=]|%[0-9a-fA-F]{2})*(\\/([a-zA-Z0-9$\\-_.+!*\'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\\?([a-zA-Z0-9$\\-_.+!*\'(),;:@&=\\/?]|%[0-9a-fA-F]{2})*)?(\\#([a-zA-Z0-9$\\-_.+!*\'(),;:@&=\\/?]|%[0-9a-fA-F]{2})*)?)?$', 'Địa chỉ trang web không hợp lệ!')) return;
-                if(this.useDifferentQueryAddress){
-                    if(!this.checkRegex(this.serverQueryIp, '^(([A-Za-z]|[^0-9][A-Za-z0-9\\-]\\.)+([A-Za-z]|[^0-9][A-Za-z0-9\\-])+)$', 'Host truy vấn không hợp lệ!')) return;
+                if(this.useDifferentPingAddress){
+                    if(!this.checkRegex(this.serverPingIp, '^(([A-Za-z]|[^0-9][A-Za-z0-9\\-]\\.)+([A-Za-z]|[^0-9][A-Za-z0-9\\-])+)$', 'Host truy vấn không hợp lệ!')) return;
                     const a_ = this.serverIp.split(".");
-                    const b_ = this.serverQueryIp.split(".");
+                    const b_ = this.serverPingIp.split(".");
                     if(a_.length < 2 || b_.length < 2 || a_[a_.length-1] !== b_[b_.length-1] || a_[a_.length-2] !== b_[b_.length-2]){
                         this.showFailedMsg("Host máy chủ và host truy vấn không cùng tên miền!");
                         return;
@@ -217,9 +217,9 @@
                     intro: this.serverIntro,
                     website: this.serverWebsite,
                     tags: this.serverTags,
-                    diffQuery: this.useDifferentQueryAddress,
-                    queryIp: this.useDifferentQueryAddress ? this.serverQueryIp : "",
-                    queryPort: this.useDifferentQueryAddress ? this.serverQueryPort : 25565
+                    diffPing: this.useDifferentPingAddress,
+                    pingIp: this.useDifferentPingAddress ? this.serverPingIp : "",
+                    pingPort: this.useDifferentPingAddress ? this.serverPingPort : 25565
                 });
             }
         },
