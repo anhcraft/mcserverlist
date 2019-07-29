@@ -9,7 +9,7 @@
         <a href="https://github.com/anhcraft/mcserverlist">
           <b-taglist class="has-text-centered mt-15 m-tt-15 m-mt-15" style="display:block" attached>
             <b-tag type="is-dark">Phiên bản</b-tag>
-            <b-tag type="is-info">BETA 3</b-tag>
+            <b-tag type="is-info">BETA 4</b-tag>
           </b-taglist>
         </a>
         <b-menu class="menu pl-10 p-ml-20 p-tl-50 mt-40 m-tt-20 m-mt-10 pb-30">
@@ -158,17 +158,17 @@
   @media screen and (max-width: $tablet - 1px) {
     @each $size in $sizes {
       .m-m-#{$size} {
-        margin: $size + px;
+        margin: $size + px !important;
       }
       .p-m-#{$size} {
-        padding: $size + px;
+        padding: $size + px !important;
       }
       @each $position in $positions {
         .m-m#{str-slice($position, 0, 1)}-#{$size} {
-          margin-#{$position}: $size + px;
+          margin-#{$position}: $size + px !important;
         }
         .p-m#{str-slice($position, 0, 1)}-#{$size} {
-          padding-#{$position}: $size + px;
+          padding-#{$position}: $size + px !important;
         }
       }
     }
@@ -178,17 +178,17 @@
   @media screen and (min-width: $tablet) {
     @each $size in $sizes {
       .m-t-#{$size} {
-        margin: $size + px;
+        margin: $size + px !important;
       }
       .p-t-#{$size} {
-        padding: $size + px;
+        padding: $size + px !important;
       }
       @each $position in $positions {
         .m-t#{str-slice($position, 0, 1)}-#{$size} {
-          margin-#{$position}: $size + px;
+          margin-#{$position}: $size + px !important;
         }
         .p-t#{str-slice($position, 0, 1)}-#{$size} {
-          padding-#{$position}: $size + px;
+          padding-#{$position}: $size + px !important;
         }
       }
     }
@@ -198,17 +198,17 @@
   @media screen and (min-width: $desktop) {
     @each $size in $sizes {
       .m-#{$size} {
-        margin: $size + px;
+        margin: $size + px !important;
       }
       .p-#{$size} {
-        padding: $size + px;
+        padding: $size + px !important;
       }
       @each $position in $positions {
         .m#{str-slice($position, 0, 1)}-#{$size} {
-          margin-#{$position}: $size + px;
+          margin-#{$position}: $size + px !important;
         }
         .p#{str-slice($position, 0, 1)}-#{$size} {
-          padding-#{$position}: $size + px;
+          padding-#{$position}: $size + px !important;
         }
       }
     }
